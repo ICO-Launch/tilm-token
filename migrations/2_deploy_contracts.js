@@ -1,5 +1,5 @@
 const Proxy = artifacts.require('./Proxy.sol');
-const Controller = artifacts.require('./Controller.sol');
+const LController = artifacts.require('./LockedController.sol');
 
 const decimals = 18;
 const supply = 10000000000000;
@@ -9,10 +9,10 @@ module.exports = async function(deployer) {
     await deployer.deploy(Proxy);
     const proxy = await Proxy.deployed();
     // deploy controller
-    await deployer.deploy(Controller);
-    const controller = await Controller.deployed();
+    await deployer.deploy(LController);
+    const controller = await LController.deployed();
     // create binding of proxy with controller interface
-    let parsec = Controller.at(proxy.address);
+    let parsec = LController.at(proxy.address);
     // use binding
     await parsec.initialize(controller.address, supply*(10**decimals));
     // check result
